@@ -13,9 +13,10 @@ body {
   background: #050505;
   color: #eaeaea;
   font-family: 'Share Tech Mono', monospace;
+  overflow-x: hidden;
 }
 
-/* Fondo */
+/* efecto scan */
 body::before {
   content: "";
   position: fixed;
@@ -37,29 +38,38 @@ body::before {
   text-align: center;
 }
 
-/* Secciones */
-.hidden {
-  display: none;
+/* texto */
+#typedText {
+  min-height: 300px;
+  line-height: 1.8;
+  white-space: pre-line;
 }
 
-/* Botón */
-button {
+/* botón */
+#continueBtn {
   margin-top: 40px;
+  display: none;
   background: transparent;
   border: 1px solid #00ff88;
   color: #00ff88;
   padding: 10px 25px;
   cursor: pointer;
   font-family: 'Orbitron';
-  transition: 0.3s;
 }
 
-button:hover {
+#continueBtn:hover {
   background: #00ff88;
-  color: #000;
+  color: black;
 }
 
-/* Input */
+/* acertijo */
+#acertijo {
+  display: none;
+  margin-top: 40px;
+  text-align: left;
+}
+
+/* input */
 #codeInput {
   margin-top: 40px;
   background: transparent;
@@ -73,20 +83,21 @@ button:hover {
   width: 300px;
 }
 
-/* Error */
+/* error */
 .error {
   border-bottom: 2px solid red !important;
 }
 
-/* Success */
+/* success */
 #success {
   display: none;
   margin-top: 40px;
   font-family: 'Orbitron';
-  font-size: 1.5rem;
   color: #00ff88;
+  font-size: 1.5rem;
 }
 
+/* logo */
 #logo {
   display: none;
   margin-top: 20px;
@@ -94,6 +105,16 @@ button:hover {
 
 #logo img {
   width: 180px;
+  opacity: 0;
+  transform: scale(0.8);
+  animation: logoFade 1.5s forwards;
+}
+
+@keyframes logoFade {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 </style>
@@ -103,35 +124,11 @@ button:hover {
 
 <div class="container">
 
-<!-- CARTA -->
-<div id="intro">
-<p>
-No todos reciben esto.<br>
-No todos están preparados para entenderlo.<br><br>
+<div id="typedText"></div>
 
-Durante un tiempo hemos estado observando.<br>
-No buscamos a cualquiera.<br><br>
+<button id="continueBtn">Continuar</button>
 
-Buscamos precisión.<br>
-Personas que ya han pasado por un proceso.<br>
-Personas que han sabido elegir.<br><br>
-
-Si estás aquí… ya has demostrado más que la mayoría.<br><br>
-
-Pero aún queda un paso.<br><br>
-
-Demuestra que sigues viendo lo que otros no ven.<br><br>
-
-La respuesta está aquí.<br>
-Siempre lo ha estado.
-</p>
-
-<button onclick="mostrarAcertijo()">Continuar</button>
-</div>
-
-<!-- ACERTIJO -->
-<div id="acertijo" class="hidden">
-
+<div id="acertijo">
 <p>Saber cambiar también es saber elegir.</p>
 <p>Observarse requiere más valor del que parece.</p>
 <p>Y no todos están preparados para hacerlo.</p>
@@ -142,10 +139,8 @@ Siempre lo ha estado.
 <p>La transformación habla por sí sola.</p>
 
 <input type="text" id="codeInput" maxlength="8" placeholder="________">
-
 </div>
 
-<!-- RESULTADO -->
 <div id="success">
 Bienvenido.<br>
 Ahora sí.<br>
@@ -158,8 +153,30 @@ Eres parte de REBEL PARTY 2026.
 
 </div>
 
-<script>
+<script defer>
 
+const text = `No todos reciben esto.
+No todos están preparados para entenderlo.
+
+Durante un tiempo hemos estado observando.
+No buscamos a cualquiera.
+
+Buscamos precisión.
+Personas que ya han pasado por un proceso.
+Personas que han sabido elegir.
+
+Si estás aquí… ya has demostrado más que la mayoría.
+
+Pero aún queda un paso.
+
+Demuestra que sigues viendo lo que otros no ven.
+
+La respuesta está aquí.
+Siempre lo ha estado.`;
+
+const typedText = document.getElementById("typedText");
+const continueBtn = document.getElementById("continueBtn");
+const acertijo = document.getElementById("acertijo");
 const input = document.getElementById("codeInput");
 const success = document.getElementById("success");
 const logo = document.getElementById("logo");
@@ -167,19 +184,36 @@ const logo = document.getElementById("logo");
 const typeSound = new Audio("type.mp3");
 const successSound = new Audio("success.mp3");
 
-function mostrarAcertijo() {
-  document.getElementById("intro").classList.add("hidden");
-  document.getElementById("acertijo").classList.remove("hidden");
+let i = 0;
+
+function typeWriter() {
+  if (i < text.length) {
+    typedText.innerHTML += text.charAt(i);
+    typeSound.currentTime = 0;
+    typeSound.play();
+    i++;
+    setTimeout(typeWriter, 25);
+  } else {
+    continueBtn.style.display = "inline-block";
+  }
 }
 
-// sonido al escribir
+typeWriter();
+
+/* botón continuar */
+continueBtn.addEventListener("click", () => {
+  continueBtn.style.display = "none";
+  acertijo.style.display = "block";
+});
+
+/* sonido typing input */
 input.addEventListener("input", () => {
   typeSound.currentTime = 0;
   typeSound.play();
 });
 
-// ENTER para validar
-input.addEventListener("keypress", function(e) {
+/* ENTER validar */
+input.addEventListener("keypress", (e) => {
   if (e.key === "Enter") {
 
     if (input.value.toUpperCase() === "SOYREBEL") {
@@ -189,10 +223,11 @@ input.addEventListener("keypress", function(e) {
       successSound.play();
 
       if (navigator.vibrate) {
-        navigator.vibrate([200, 100, 200]);
+        navigator.vibrate([200,100,200]);
       }
 
     } else {
+
       input.classList.add("error");
 
       setTimeout(() => {
