@@ -1,84 +1,213 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Acceso REBEL</title>
-  <style>
-    body {
-      background: radial-gradient(circle, #111 0%, #000 100%);
-      color: white;
-      font-family: Arial;
-      text-align: center;
-      padding-top: 100px;
-    }
-    input {
-      padding: 10px;
-      font-size: 18px;
-    }
-    button {
-      padding: 10px 20px;
-      font-size: 18px;
-      margin-top: 10px;
-      cursor: pointer;
-    }
-    #mensaje {
-      margin-top: 20px;
-      font-size: 20px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>REBEL PARTY 2026</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+<style>
+
+body {
+  margin: 0;
+  background: #050505;
+  color: #eaeaea;
+  font-family: 'Share Tech Mono', monospace;
+}
+
+/* Fondo scan */
+body::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(255,255,255,0.02),
+    rgba(255,255,255,0.02) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+}
+
+/* Contenedor */
+.container {
+  max-width: 700px;
+  margin: auto;
+  padding: 60px 20px;
+  text-align: center;
+}
+
+/* Carta */
+.letter {
+  line-height: 1.8;
+  animation: fadeIn 3s forwards;
+}
+
+/* Acertijo */
+.riddle {
+  margin-top: 50px;
+  text-align: left;
+}
+
+.riddle p::first-letter {
+  color: #ff0033;
+  font-weight: bold;
+}
+
+/* Input */
+#codeInput {
+  margin-top: 50px;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid #00ff88;
+  color: #00ff88;
+  font-size: 2rem;
+  letter-spacing: 12px;
+  text-align: center;
+  outline: none;
+  width: 300px;
+  transition: 0.3s;
+}
+
+/* Error */
+.error {
+  border-bottom: 2px solid red !important;
+  animation: shake 0.3s;
+}
+
+/* Success */
+#success {
+  display: none;
+  margin-top: 40px;
+  font-family: 'Orbitron';
+  color: #00ff88;
+  font-size: 1.5rem;
+}
+
+#logo {
+  display: none;
+  margin-top: 20px;
+}
+
+#logo img {
+  width: 180px;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+  from {opacity:0;}
+  to {opacity:1;}
+}
+
+@keyframes shake {
+  0% {transform: translateX(0);}
+  25% {transform: translateX(-5px);}
+  50% {transform: translateX(5px);}
+  75% {transform: translateX(-5px);}
+  100% {transform: translateX(0);}
+}
+
+</style>
 </head>
+
 <body>
 
-  <h1>NO ES PARA TODOS</h1>
-  <p id="texto"></p>
+<div class="container">
 
-  <p>Si estás aquí, es porque algo ha llamado tu atención.</p>
-  <p>Pero entrar… no es automático.</p>
-  <p>Solo quienes saben ver más allá podrán continuar.</p>
+<div class="letter">
+<p>
+No todos reciben esto.<br>
+No todos están preparados para entenderlo.<br><br>
 
-  <input type="text" id="respuesta" placeholder="Introduce la clave">
-  <br>
-  <button onclick="comprobar()">Acceder</button>
+Durante un tiempo hemos estado observando.<br>
+No buscamos a cualquiera.<br><br>
 
-  <div id="mensaje"></div>
+Buscamos precisión.<br>
+Personas que ya han pasado por un proceso.<br>
+Personas que han sabido elegir.<br><br>
 
-  <script>
-    // EFECTO ESCRITURA
-    var mensaje = "Hemos estado observando...";
-    var i = 0;
-    var speed = 40;
+Si estás aquí… ya has demostrado más que la mayoría.<br><br>
 
-    function escribir() {
-      if (i < mensaje.length) {
-        document.getElementById("texto").innerHTML += mensaje.charAt(i);
-        i++;
-        setTimeout(escribir, speed);
+Pero aún queda un paso.<br><br>
+
+Demuestra que sigues viendo lo que otros no ven.<br><br>
+
+La respuesta está aquí.<br>
+Siempre lo ha estado.
+</p>
+</div>
+
+<div class="riddle">
+<p>Saber cambiar también es saber elegir.</p>
+<p>Observarse requiere más valor del que parece.</p>
+<p>Y no todos están preparados para hacerlo.</p>
+<p>Refinaste lo que otros ni siquiera perciben.</p>
+<p>Elegiste verte como realmente querías.</p>
+<p>Buscaste precisión, no casualidad.</p>
+<p>El detalle marcó la diferencia.</p>
+<p>La transformación habla por sí sola.</p>
+</div>
+
+<input type="text" id="codeInput" maxlength="8" placeholder="________">
+
+<div id="success">
+Bienvenido.<br>
+Ahora sí.<br>
+Eres parte de REBEL PARTY 2026.
+</div>
+
+<div id="logo">
+<img src="logo.png">
+</div>
+
+</div>
+
+<script>
+
+const input = document.getElementById("codeInput");
+const success = document.getElementById("success");
+const logo = document.getElementById("logo");
+
+const typeSound = new Audio("type.mp3");
+const successSound = new Audio("success.mp3");
+
+input.addEventListener("input", () => {
+
+  // sonido al escribir
+  typeSound.currentTime = 0;
+  typeSound.play();
+
+  if (input.value.length === 8) {
+
+    if (input.value.toUpperCase() === "SOYREBEL") {
+
+      success.style.display = "block";
+      logo.style.display = "block";
+      successSound.play();
+
+      // vibración móvil
+      if (navigator.vibrate) {
+        navigator.vibrate([200, 100, 200]);
       }
+
+    } else {
+
+      // error visual
+      input.classList.add("error");
+
+      setTimeout(() => {
+        input.classList.remove("error");
+      }, 500);
+
+      input.value = "";
+
     }
+  }
 
-    escribir();
+});
 
-    // VALIDACIÓN
-    function comprobar() {
-      var respuesta = document.getElementById("respuesta").value.toLowerCase();
-
-      if (respuesta === "soy rebel") {
-        document.body.innerHTML = `
-          <h1>ACCESO CONCEDIDO</h1>
-          <p>No era evidente.</p>
-          <p>No era para todos.</p>
-          <p>Pero tú lo has visto.</p>
-          <br>
-          <h2>REBEL PARTY 2026</h2>
-          <p>📍 Ubicación: Se revelará pronto</p>
-          <p>🕒 23:00</p>
-          <p>Dress code: Negro</p>
-        `;
-      } else {
-        document.getElementById("mensaje").innerText = "No es tan fácil. Observa mejor.";
-      }
-    }
-  </script>
+</script>
 
 </body>
 </html>
