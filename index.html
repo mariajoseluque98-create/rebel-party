@@ -31,22 +31,10 @@
 
   <h1>NO ES PARA TODOS</h1>
   <p id="texto"></p>
-  var mensaje = "Hemos estado observando...";
-var i = 0;
-var speed = 40;
 
-function escribir() {
-  if (i < mensaje.length) {
-    document.getElementById("texto").innerHTML += mensaje.charAt(i);
-    i++;
-    setTimeout(escribir, speed);
-  }
-}
-
-escribir();
-<p>Si estás aquí, es porque algo ha llamado tu atención.</p>
-<p>Pero entrar… no es automático.</p>
-<p>Solo quienes saben ver más allá podrán continuar.</p>
+  <p>Si estás aquí, es porque algo ha llamado tu atención.</p>
+  <p>Pero entrar… no es automático.</p>
+  <p>Solo quienes saben ver más allá podrán continuar.</p>
 
   <input type="text" id="respuesta" placeholder="Introduce la clave">
   <br>
@@ -55,21 +43,37 @@ escribir();
   <div id="mensaje"></div>
 
   <script>
+    // EFECTO ESCRITURA
+    var mensaje = "Hemos estado observando...";
+    var i = 0;
+    var speed = 40;
+
+    function escribir() {
+      if (i < mensaje.length) {
+        document.getElementById("texto").innerHTML += mensaje.charAt(i);
+        i++;
+        setTimeout(escribir, speed);
+      }
+    }
+
+    escribir();
+
+    // VALIDACIÓN
     function comprobar() {
       var respuesta = document.getElementById("respuesta").value.toLowerCase();
 
       if (respuesta === "soy rebel") {
-       document.body.innerHTML = `
-  <h1>ACCESO CONCEDIDO</h1>
-  <p>No era evidente.</p>
-  <p>No era para todos.</p>
-  <p>Pero tú lo has visto.</p>
-  <br>
-  <h2>REBEL PARTY 2026</h2>
-  <p>📍 Ubicación: Se revelará pronto</p>
-  <p>🕒 23:00</p>
-  <p>Dress code: Negro</p>
-`;
+        document.body.innerHTML = `
+          <h1>ACCESO CONCEDIDO</h1>
+          <p>No era evidente.</p>
+          <p>No era para todos.</p>
+          <p>Pero tú lo has visto.</p>
+          <br>
+          <h2>REBEL PARTY 2026</h2>
+          <p>📍 Ubicación: Se revelará pronto</p>
+          <p>🕒 23:00</p>
+          <p>Dress code: Negro</p>
+        `;
       } else {
         document.getElementById("mensaje").innerText = "No es tan fácil. Observa mejor.";
       }
