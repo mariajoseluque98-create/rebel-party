@@ -15,7 +15,7 @@ body {
   font-family: 'Share Tech Mono', monospace;
 }
 
-/* Fondo scan */
+/* Fondo */
 body::before {
   content: "";
   position: fixed;
@@ -30,7 +30,6 @@ body::before {
   );
 }
 
-/* Contenedor */
 .container {
   max-width: 700px;
   margin: auto;
@@ -38,26 +37,31 @@ body::before {
   text-align: center;
 }
 
-/* Carta */
-.letter {
-  line-height: 1.8;
-  animation: fadeIn 3s forwards;
+/* Secciones */
+.hidden {
+  display: none;
 }
 
-/* Acertijo */
-.riddle {
-  margin-top: 50px;
-  text-align: left;
+/* Botón */
+button {
+  margin-top: 40px;
+  background: transparent;
+  border: 1px solid #00ff88;
+  color: #00ff88;
+  padding: 10px 25px;
+  cursor: pointer;
+  font-family: 'Orbitron';
+  transition: 0.3s;
 }
 
-.riddle p::first-letter {
-  color: #ff0033;
-  font-weight: bold;
+button:hover {
+  background: #00ff88;
+  color: #000;
 }
 
 /* Input */
 #codeInput {
-  margin-top: 50px;
+  margin-top: 40px;
   background: transparent;
   border: none;
   border-bottom: 2px solid #00ff88;
@@ -67,13 +71,11 @@ body::before {
   text-align: center;
   outline: none;
   width: 300px;
-  transition: 0.3s;
 }
 
 /* Error */
 .error {
   border-bottom: 2px solid red !important;
-  animation: shake 0.3s;
 }
 
 /* Success */
@@ -81,8 +83,8 @@ body::before {
   display: none;
   margin-top: 40px;
   font-family: 'Orbitron';
-  color: #00ff88;
   font-size: 1.5rem;
+  color: #00ff88;
 }
 
 #logo {
@@ -94,20 +96,6 @@ body::before {
   width: 180px;
 }
 
-/* Animaciones */
-@keyframes fadeIn {
-  from {opacity:0;}
-  to {opacity:1;}
-}
-
-@keyframes shake {
-  0% {transform: translateX(0);}
-  25% {transform: translateX(-5px);}
-  50% {transform: translateX(5px);}
-  75% {transform: translateX(-5px);}
-  100% {transform: translateX(0);}
-}
-
 </style>
 </head>
 
@@ -115,7 +103,8 @@ body::before {
 
 <div class="container">
 
-<div class="letter">
+<!-- CARTA -->
+<div id="intro">
 <p>
 No todos reciben esto.<br>
 No todos están preparados para entenderlo.<br><br>
@@ -136,9 +125,13 @@ Demuestra que sigues viendo lo que otros no ven.<br><br>
 La respuesta está aquí.<br>
 Siempre lo ha estado.
 </p>
+
+<button onclick="mostrarAcertijo()">Continuar</button>
 </div>
 
-<div class="riddle">
+<!-- ACERTIJO -->
+<div id="acertijo" class="hidden">
+
 <p>Saber cambiar también es saber elegir.</p>
 <p>Observarse requiere más valor del que parece.</p>
 <p>Y no todos están preparados para hacerlo.</p>
@@ -147,10 +140,12 @@ Siempre lo ha estado.
 <p>Buscaste precisión, no casualidad.</p>
 <p>El detalle marcó la diferencia.</p>
 <p>La transformación habla por sí sola.</p>
-</div>
 
 <input type="text" id="codeInput" maxlength="8" placeholder="________">
 
+</div>
+
+<!-- RESULTADO -->
 <div id="success">
 Bienvenido.<br>
 Ahora sí.<br>
@@ -172,13 +167,20 @@ const logo = document.getElementById("logo");
 const typeSound = new Audio("type.mp3");
 const successSound = new Audio("success.mp3");
 
-input.addEventListener("input", () => {
+function mostrarAcertijo() {
+  document.getElementById("intro").classList.add("hidden");
+  document.getElementById("acertijo").classList.remove("hidden");
+}
 
-  // sonido al escribir
+// sonido al escribir
+input.addEventListener("input", () => {
   typeSound.currentTime = 0;
   typeSound.play();
+});
 
-  if (input.value.length === 8) {
+// ENTER para validar
+input.addEventListener("keypress", function(e) {
+  if (e.key === "Enter") {
 
     if (input.value.toUpperCase() === "SOYREBEL") {
 
@@ -186,14 +188,11 @@ input.addEventListener("input", () => {
       logo.style.display = "block";
       successSound.play();
 
-      // vibración móvil
       if (navigator.vibrate) {
         navigator.vibrate([200, 100, 200]);
       }
 
     } else {
-
-      // error visual
       input.classList.add("error");
 
       setTimeout(() => {
@@ -201,10 +200,8 @@ input.addEventListener("input", () => {
       }, 500);
 
       input.value = "";
-
     }
   }
-
 });
 
 </script>
