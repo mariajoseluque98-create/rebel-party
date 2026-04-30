@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Acceso REBEL</title>
+  <style>
+    body {
+      background-color: black;
+      color: white;
+      font-family: Arial;
+      text-align: center;
+      padding-top: 100px;
+    }
+    input {
+      padding: 10px;
+      font-size: 18px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 18px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+    #mensaje {
+      margin-top: 20px;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>ACCESO RESTRINGIDO</h1>
+  <p>Solo quienes entienden el mensaje podrán continuar.</p>
+
+  <input type="text" id="respuesta" placeholder="Introduce la clave">
+  <br>
+  <button onclick="comprobar()">Acceder</button>
+
+  <div id="mensaje"></div>
+
+  <script>
+    function comprobar() {
+      var respuesta = document.getElementById("respuesta").value.toLowerCase();
+
+      if (respuesta === "soy rebel") {
+        document.body.innerHTML = `
+          <h1>ACCESO CONCEDIDO</h1>
+          <p>Bienvenido a REBEL PARTY 2026</p>
+          <p>📍 Lugar secreto</p>
+          <p>🕒 23:00</p>
+          <p>Dress code: Negro</p>
+        `;
+      } else {
+        document.getElementById("mensaje").innerText = "Incorrecto. Vuelve a intentarlo.";
+      }
+    }
+  </script>
+
+</body>
+</html>
